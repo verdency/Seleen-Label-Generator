@@ -3,131 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        /* Strict sizing for 30x50mm Thermal Labels */
+        /* Exact physical dimensions for thermal printing */
         @page { size: 30mm 50mm; margin: 0; }
         
         body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
+            font-family: 'Segoe UI', sans-serif; 
             margin: 0; padding: 0; 
+            background: #f0f0f0;
             display: flex; justify-content: center;
-            background: #e0e0e0;
         }
 
-        .label-container {
-            width: 30mm;
-            height: 50mm;
+        .label {
+            width: 30mm; height: 50mm;
             background: white;
-            padding: 1.5mm 1.8mm;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
+            position: relative; /* Absolute base */
             overflow: hidden;
         }
 
-        /* Top SKU Section - Fixed Height */
-        .sku-section {
-            height: 10mm;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .sku-header { 
-            font-size: 22pt; font-weight: 800; line-height: 1; margin: 0;
-            white-space: nowrap;
-        }
-
-        /* Name Section - Responsive Height */
-        .name-section {
-            height: 7mm;
-            display: flex; align-items: center; justify-content: center;
-            text-align: center; margin: 1mm 0;
-        }
-        .product-name { 
-            font-size: 6.8pt; line-height: 1.1; font-weight: 400;
-            overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+        /* SKU: Fixed at the top */
+        .sku {
+            position: absolute;
+            top: 2mm; width: 100%;
+            text-align: center;
+            font-size: 24pt; font-weight: 800;
+            line-height: 1;
         }
 
-        .divider { border-top: 0.8pt dashed #000; width: 90%; margin: 0 auto; }
-
-        /* Instructions Section - Dynamic space */
-        .instr-section {
-            font-size: 6.5pt; line-height: 1.3;
-            flex-grow: 1; padding: 1mm 0.5mm;
-            overflow: hidden;
+        /* Product Name: Centered below SKU */
+        .name {
+            position: absolute;
+            top: 13mm; width: 100%;
+            padding: 0 2mm; box-sizing: border-box;
+            text-align: center;
+            font-size: 7.2pt; line-height: 1.2;
         }
 
-        /* Bottom Row - Fixed to Footer */
-        .bottom-row {
-            height: 11mm;
+        /* Divider: Fixed position */
+        .line {
+            position: absolute;
+            top: 22mm; left: 10%; width: 80%;
+            border-top: 1px dashed black;
+        }
+
+        /* Instructions: Middle block */
+        .instr {
+            position: absolute;
+            top: 24mm; left: 2.5mm; width: 25mm;
+            font-size: 6.8pt; line-height: 1.4;
+        }
+
+        /* Bottom Section: Grouped for stability */
+        .bottom-area {
+            position: absolute;
+            bottom: 2mm; left: 2mm; right: 2mm;
+            height: 12mm;
             display: flex; justify-content: space-between; align-items: flex-end;
-            border-top: 0.5pt solid #eee; padding-top: 1mm;
         }
 
-        .price-group { text-align: left; }
-        .price-text { font-size: 13pt; font-weight: 700; line-height: 1; }
-        .currency { font-size: 6pt; }
-        .variant-info { font-size: 6.8pt; margin: 0.5mm 0; white-space: nowrap; }
-        .meta-text { font-size: 5.5pt; color: #444; font-style: italic; }
+        .price-box { text-align: left; }
+        .price { font-size: 15pt; font-weight: 700; line-height: 1; }
+        .vnd { font-size: 6pt; margin-left: 0.5mm; }
+        .variant { font-size: 7.5pt; margin: 1mm 0; white-space: nowrap; }
+        .meta { font-size: 5.5pt; font-style: italic; color: #333; }
 
-        /* Size Box - Fixed Square */
+        /* Black Size Box: Fixed 10mm square */
         .size-box {
             background: black; color: white;
-            width: 9mm; height: 9mm;
+            width: 10mm; height: 10mm;
             display: flex; justify-content: center; align-items: center;
-            font-size: 18pt; font-weight: 900;
+            font-size: 20pt; font-weight: 900;
         }
 
-        @media print { body { background: none; } .label-container { border: none; } }
+        @media print { body { background: none; } }
     </style>
 </head>
 <body>
 
-<div class="label-container">
-    <div class="sku-section">
-        <div class="sku-header" id="sku">WT0209</div>
-    </div>
-    
-    <div class="name-section">
-        <div class="product-name" id="name">Set áo tay dài cài nút mỏng cùng áo quây thắt nơ</div>
-    </div>
-    
-    <div class="divider"></div>
-
-    <div class="instr-section" id="instr">
+<div class="label">
+    <div class="sku" id="sku">WT0209</div>
+    <div class="name" id="name">Set áo tay dài cài nút mỏng cùng áo quây thắt nơ</div>
+    <div class="line"></div>
+    <div class="instr" id="instr">
         - Không giặt chung 2 áo (áo xám).<br>
         - Sử dụng túi giặt khi giặt máy.<br>
         - Giặt nước lạnh dưới 30°C.
     </div>
-
-    <div class="bottom-row">
-        <div class="price-group">
-            <div class="price-text"><span id="price">350.000</span> <span class="currency">VND</span></div>
-            <div class="variant-info" id="variant">K104 - Xám đậm</div>
-            <div class="meta-text" id="meta">2026-04-14 | <b>XKQ12</b></div>
+    <div class="bottom-area">
+        <div class="price-box">
+            <div class="price"><span id="price">350.000</span><span class="vnd">VND</span></div>
+            <div class="variant" id="variant">K104 - Xám đậm</div>
+            <div class="meta" id="meta">2026-04-14 | <b>XKQ12</b></div>
         </div>
         <div class="size-box" id="size">M</div>
     </div>
 </div>
 
 <script>
-    const params = new URLSearchParams(window.location.search);
-
-    // Update fields or use document defaults 
-    if(params.has('sku')) document.getElementById('sku').innerText = params.get('sku');
-    if(params.has('name')) document.getElementById('name').innerText = params.get('name');
-    if(params.has('size')) document.getElementById('size').innerText = params.get('size');
-    if(params.has('variant')) document.getElementById('variant').innerText = params.get('variant');
+    const p = new URLSearchParams(window.location.search);
     
-    // Formatting Price for Seleen standards 
-    const rawPrice = params.get('price') || "350000";
+    // Fill data from URL or use reference defaults
+    if(p.has('sku')) document.getElementById('sku').innerText = p.get('sku');
+    if(p.has('name')) document.getElementById('name').innerText = p.get('name');
+    if(p.has('size')) document.getElementById('size').innerText = p.get('size');
+    if(p.has('variant')) document.getElementById('variant').innerText = p.get('variant');
+    
+    const rawPrice = p.get('price') || "350000";
     document.getElementById('price').innerText = Number(rawPrice).toLocaleString('de-DE');
 
-    // Dynamic Metadata 
-    const batch = params.get('batch') || "XKQ12";
-    const date = new Date().toISOString().split('T')[0];
-    document.getElementById('meta').innerHTML = `${date} | <b>${batch}</b>`;
-
-    // Shrink SKU if it's too long
-    const skuEl = document.getElementById('sku');
-    if (skuEl.innerText.length > 7) skuEl.style.fontSize = "16pt";
+    // Auto-shrink SKU if it exceeds standard length to avoid clipping
+    const sku = document.getElementById('sku');
+    if (sku.innerText.length > 7) sku.style.fontSize = "16pt";
 </script>
 
 </body>
