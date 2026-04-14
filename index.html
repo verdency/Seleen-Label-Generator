@@ -3,132 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        /* Precise 30x50mm Print Settings */
         @page { size: 30mm 50mm; margin: 0; }
         
         body { 
             font-family: 'Segoe UI', sans-serif; 
             margin: 0; padding: 0; 
-            display: flex; justify-content: center;
             background: #f0f0f0;
+            display: flex; justify-content: center;
         }
 
-        .label-container {
-            width: 30mm; height: 50mm;
+        .label-grid {
+            width: 30mm;
+            height: 50mm;
             background: white;
             padding: 1.5mm 2mm;
             box-sizing: border-box;
-            display: flex; flex-direction: column;
+            display: grid;
+            /* Defining rows: SKU, Name, Divider, Instructions, Bottom Info */
+            grid-template-rows: 10mm 9mm 2mm 15mm 1fr;
+            grid-template-columns: 1fr;
             align-items: center;
-            overflow: hidden; /* Prevents text from spilling out */
+            overflow: hidden;
         }
 
-        /* Fixed SKU Header with controlled height */
-        .sku-container {
-            height: 10mm;
-            display: flex; align-items: center; justify-content: center;
+        /* 1. SKU Row */
+        .sku { 
+            font-size: 24pt; font-weight: 800; 
+            text-align: center; line-height: 1;
+            white-space: nowrap;
+        }
+
+        /* 2. Name Row */
+        .name { 
+            font-size: 7.2pt; text-align: center; 
+            line-height: 1.1; overflow: hidden;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+        }
+
+        /* 3. Divider */
+        .divider { border-top: 1px dashed #000; width: 90%; justify-self: center; }
+
+        /* 4. Instructions Row */
+        .instr { 
+            font-size: 6.8pt; line-height: 1.3; 
+            align-self: start; padding-top: 1mm;
+        }
+
+        /* 5. Bottom Row (Price & Size) */
+        .bottom-section {
+            display: grid;
+            grid-template-columns: 1fr 9.5mm;
+            grid-template-rows: 1fr;
+            align-items: end;
             width: 100%;
         }
-        .sku-header { 
-            font-size: 24pt; font-weight: 800; 
-            margin: 0; line-height: 0.9;
-        }
 
-        /* Responsive Product Name */
-        .name-container {
-            height: 8mm;
-            display: flex; align-items: center; justify-content: center;
-            text-align: center; margin: 0.5mm 0;
-        }
-        .product-name { 
-            font-size: 7.5pt; font-weight: 400; line-height: 1.1;
-        }
+        .price-data { text-align: left; }
+        .price-row { font-size: 14pt; font-weight: 700; display: flex; align-items: baseline; }
+        .currency { font-size: 6pt; margin-left: 0.5mm; }
+        
+        .variant { font-size: 7.2pt; margin: 0.5mm 0; white-space: nowrap; }
+        .footer { font-size: 5.8pt; font-style: italic; color: #333; }
 
-        .divider { width: 90%; border-top: 1px dashed #000; margin: 0.5mm 0; }
-
-        /* Care Instructions Area */
-        .instructions { 
-            font-size: 6.8pt; align-self: flex-start; 
-            line-height: 1.3; flex-grow: 1;
-            padding-left: 0.5mm;
-        }
-
-        /* Bottom Fixed Section */
-        .bottom-row {
-            width: 100%; height: 12mm;
-            display: flex; justify-content: space-between; align-items: flex-end;
-        }
-
-        .price-group { text-align: left; }
-        .price { font-size: 15pt; font-weight: 700; }
-        .currency { font-size: 6pt; }
-        .variant { font-size: 7pt; margin-bottom: 0.5mm; }
-        .meta { font-size: 5.5pt; font-style: italic; color: #444; }
-
-        /* Black Size Box - Scaled Down */
         .size-box {
             background: black; color: white;
-            width: 9mm; height: 9mm;
+            width: 9.5mm; height: 9.5mm;
             display: flex; justify-content: center; align-items: center;
-            font-size: 18pt; font-weight: 900;
+            font-size: 19pt; font-weight: 900;
         }
 
-        @media print { body { background: none; } .label-container { border: none; } }
+        @media print { body { background: none; } }
     </style>
 </head>
 <body>
 
-<div class="label-container">
-    <div class="sku-container">
-        <div class="sku-header" id="disp-sku">WT0080</div>
-    </div>
-    <div class="name-container">
-        <div class="product-name" id="disp-name">Set áo tay dài cài nút mỏng cùng áo quây thắt nơ</div>
-    </div>
-    
+<div class="label-grid">
+    <div class="sku" id="sku">WT0209</div>
+    <div class="name" id="name">Set áo tay dài cài nút mỏng cùng áo quây thắt nơ</div>
     <div class="divider"></div>
-
-    <div class="instructions" id="disp-instr">
+    <div class="instr" id="instr">
         - Không giặt chung 2 áo (áo xám).<br>
         - Sử dụng túi giặt khi giặt máy.<br>
         - Giặt nước lạnh dưới 30°C.
     </div>
-
-    <div class="bottom-row">
-        <div class="price-group">
-            <div class="price"><span id="disp-price">350.000</span> <span class="currency">VND</span></div>
-            <div class="variant" id="disp-variant">K104 - Xám đậm</div>
-            <div class="meta" id="disp-meta">2026-04-14 | <b>XKQ12</b></div>
+    <div class="bottom-section">
+        <div class="price-data">
+            <div class="price-row"><span id="price">350.000</span><span class="currency">VND</span></div>
+            <div class="variant" id="variant">K104 - Xám đậm</div>
+            <div class="footer" id="footer">2026-04-14 | <b>XKQ12</b></div>
         </div>
-        <div class="size-box" id="disp-size">S</div>
+        <div class="size-box" id="size">M</div>
     </div>
 </div>
 
 <script>
-    const params = new URLSearchParams(window.location.search);
+    const p = new URLSearchParams(window.location.search);
     
-    // Function to auto-shrink font if text is too long
-    function adjustFontSize(id, maxSize) {
-        const el = document.getElementById(id);
-        let size = maxSize;
-        while (el.scrollHeight > el.offsetHeight && size > 5) {
-            size--;
-            el.style.fontSize = size + "pt";
-        }
+    // Updates
+    if(p.has('sku')) document.getElementById('sku').innerText = p.get('sku');
+    if(p.has('name')) document.getElementById('name').innerText = p.get('name');
+    if(p.has('size')) document.getElementById('size').innerText = p.get('size');
+    if(p.has('variant')) document.getElementById('variant').innerText = p.get('variant');
+    if(p.has('batch')) document.getElementById('footer').innerHTML = `2026-04-14 | <b>${p.get('batch')}</b>`;
+    
+    const priceRaw = p.get('price') || "350000";
+    document.getElementById('price').innerText = Number(priceRaw).toLocaleString('de-DE');
+
+    // Auto-shrink SKU if it exceeds 6 characters
+    if (document.getElementById('sku').innerText.length > 6) {
+        document.getElementById('sku').style.fontSize = "18pt";
     }
-
-    // Dynamic Updates
-    document.getElementById('disp-sku').innerText = params.get('sku') || "WT0080";
-    document.getElementById('disp-name').innerText = params.get('name') || "Set áo tay dài cài nút mỏng cùng áo quây thắt nơ";
-    document.getElementById('disp-size').innerText = params.get('size') || "S";
-    
-    // Formatting Price with thousands separator
-    const priceRaw = params.get('price') || "350000";
-    document.getElementById('disp-price').innerText = Number(priceRaw).toLocaleString('de-DE');
-
-    // Run font adjustments after loading data
-    adjustFontSize('disp-sku', 24);
-    adjustFontSize('disp-name', 7.5);
 </script>
 
 </body>
