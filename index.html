@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Label Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <style>
+        body { font-family: 'Arial', sans-serif; display: flex; justify-content: center; padding: 20px; background: #f0f0f0; }
+        
+        /* The Label Layout */
+        .label-container {
+            width: 380px; /* Adjust to your thermal paper width (e.g., 50mm or 70mm) */
+            background: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sku-header { font-size: 60px; font-weight: 900; margin: 0; line-height: 1; }
+        .product-name { font-size: 18px; text-align: center; margin: 10px 0; font-weight: 400; }
+        
+        .divider { width: 80%; border-top: 2px dashed #000; margin: 10px 0; }
+
+        .instructions { font-size: 14px; align-self: flex-start; line-height: 1.6; margin-bottom: 40px; }
+
+        .footer-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end; 
+            width: 100%; 
+            margin-top: auto; 
+        }
+
+        .price-group { text-align: left; }
+        .price { font-size: 32px; font-weight: 800; }
+        .currency { font-size: 14px; }
+        .details { font-size: 14px; margin-top: 5px; }
+        .timestamp { font-size: 11px; font-style: italic; margin-top: 5px; color: #555; }
+
+        .size-box {
+            background: black;
+            color: white;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 50px;
+            font-weight: 900;
+        }
+
+        @media print {
+            body { background: none; padding: 0; }
+            .label-container { border: none; }
+            button { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="label-container" id="label">
+    <h1 class="sku-header" id="disp-sku-big">WT0080</h1>
+    <p class="product-name" id="disp-name">Product Name Loading...</p>
+    
+    <div class="divider"></div>
+
+    <div class="instructions" id="disp-instr">
+        - Không giặt chung 2 áo vì có thể bị lem màu.<br>
+        - Nên sử dụng túi giặt khi giặt máy.<br>
+        - Giặt với nước lạnh dưới 30°C.
+    </div>
+
+    <div class="footer-row">
+        <div class="price-group">
+            <span class="price" id="disp-price">0</span> <span class="currency">VND</span>
+            <div class="details" id="disp-variant">SKU - Color</div>
+            <div class="timestamp" id="disp-time">2026-04-14 | <b>XK012</b></div>
+        </div>
+        <div class="size-box" id="disp-size">S</div>
+    </div>
+    
+    <svg id="barcode" style="margin-top: 15px;"></svg>
+</div>
+
+<script>
+    // 1. Get parameters from the URL
+    const params = new URLSearchParams(window.location.search);
+
+    // 2. Map parameters to the HTML elements
+    document.getElementById('disp-sku-big').innerText = params.get('sku') || 'SKU';
+    document.getElementById('disp-name').innerText = params.get('name') || 'Product Name';
+    document.getElementById('disp-price').innerText = (params.get('price') || '0').toLocaleString();
+    document.getElementById('disp-size').innerText = params.get('size') || 'S';
+    document.getElementById('disp-variant').innerText = (params.get('sku') || '') + " - " + (params.get('color') || '');
+    
+    // Custom Instructions (Handles line breaks if you use %0A in URL)
+    if(params.get('instr')) {
+        document.getElementById('disp-instr').innerHTML = params.get('instr').replace(/\n/g, '<br>');
+    }
+
+    // 3. Generate Barcode automatically
+    JsBarcode("#barcode", params.get('sku') || "0000", {
+        format: "CODE128",
+        width: 2,
+        height: 40,
+        displayValue: false
+    });
+
+    // 4. Auto-print option (Optional: uncomment below to trigger print dialog on load)
+    // window.print();
+</script>
+
+</body>
+</html>
