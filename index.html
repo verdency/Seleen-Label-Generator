@@ -28,14 +28,12 @@
             line-height: 1;
         }
 
-        /* CHỈNH SỬA TẠI ĐÂY: Giới hạn chiều cao */
         .content-area {
             position: absolute;
             top: 7mm; left: 0; width: 100%;
-            /* max-height tính toán: 50mm tổng - 7mm top - 11mm chân nhãn = 32mm */
             max-height: 32mm; 
             display: flex; flex-direction: column; align-items: center;
-            overflow: hidden; /* Cắt nội dung thừa nếu dài quá vạch đỏ */
+            overflow: hidden;
         }
 
         .name { width: 100%; text-align: center; font-size: 5pt; font-weight: 400; line-height: 1.2; margin-bottom: 1.5mm; }
@@ -48,7 +46,7 @@
             left: 1mm;
             font-size: 10pt; font-weight: 700; 
             display: flex; align-items: baseline;
-            background: white; /* Đảm bảo che phần chữ thừa nếu có */
+            background: white;
             z-index: 10;
         }
 
@@ -75,18 +73,30 @@
         .time-part { font-style: italic; font-weight: 400; }
         .batch-part { font-style: italic; font-weight: 700; }
 
+        /* SỬA LỖI SIZE BOX TẠI ĐÂY */
         .size-box {
             position: absolute;
             bottom: 3mm; 
             right: 1mm; 
-            background: black; color: white;
+            background: black !important; /* Dùng !important để giữ màu đen */
+            color: white !important;      /* Dùng !important để giữ màu trắng */
             width: 11mm; height: 8mm;
             display: flex; justify-content: center; align-items: center;
             font-size: 18pt; font-weight: 1000;
             z-index: 10;
+            /* Lệnh quan trọng để trình duyệt in được màu nền */
+            -webkit-print-color-adjust: exact; 
+            print-color-adjust: exact;
         }
 
-        @media print { body { background: none; } }
+        @media print { 
+            body { background: none; }
+            .size-box {
+                background: black !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+            }
+        }
     </style>
 </head>
 <body>
@@ -128,9 +138,7 @@
     if(p.has('size')) document.getElementById('size').innerText = p.get('size');
     if(p.has('variant')) document.getElementById('variant').innerText = p.get('variant');
     
-    // THÊM XỬ LÝ INSTR TẠI ĐÂY
     if(p.has('instr')) {
-        // Thay thế dấu xuống dòng (newline) bằng thẻ <br> để hiển thị đúng trong HTML
         document.getElementById('instr').innerHTML = p.get('instr').replace(/\n/g, '<br>');
     }
     
