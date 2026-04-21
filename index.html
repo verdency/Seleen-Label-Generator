@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        /* Thiết lập trang in 30x50mm */
         @page { size: 30mm 50mm; margin: 0; }
         
         body { 
@@ -22,7 +21,7 @@
             box-sizing: border-box;
         }
 
-        /* SKU: 17pt */
+        /* SKU cố định ở trên cùng */
         .sku {
             position: absolute;
             top: 0.5mm; width: 100%; left: 0;
@@ -31,30 +30,43 @@
             line-height: 1;
         }
 
-        /* Name: 5pt */
-        .name {
+        /* Nhóm nội dung động bắt đầu từ vị trí 6mm */
+        .content-area {
             position: absolute;
-            top: 6mm; width: 100%; left: 0;
-            padding: 0 0.5mm; box-sizing: border-box;
+            top: 6mm; /* Vị trí cố định của phần Name */
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 0.5mm;
+            box-sizing: border-box;
+        }
+
+        .name {
+            width: 100%;
             text-align: center;
             font-size: 5pt; font-weight: 400;
             line-height: 1.2;
+            margin-bottom: 1.5mm; /* Khoảng cách dưới tên */
         }
 
         .divider {
-            position: absolute;
-            top: 16mm; left: 10%; width: 80%;
+            width: 80%;
             border-top: 0.5pt dashed black;
+            margin-bottom: 1.5mm; /* Khoảng cách dưới đường kẻ */
         }
 
-        /* Hướng dẫn sử dụng: Giữ tỉ lệ theo mẫu */
         .instr {
-            position: absolute;
-            top: 18mm; left: 2mm; width: 26mm;
-            font-size: 5.5pt; line-height: 1.5;
+            width: 100%;
+            font-size: 5.5pt; 
+            line-height: 1.4;
+            text-align: left; /* Căn lề trái cho hướng dẫn */
+            padding: 0 1.5mm;
+            box-sizing: border-box;
         }
 
-        /* Bottom Section */
+        /* Footer giữ cố định dưới đáy */
         .footer-area {
             position: absolute;
             bottom: 2mm; left: 2mm; right: 2mm;
@@ -63,21 +75,11 @@
         }
 
         .info-group { text-align: left; }
-
-        /* Price: 10pt & Bold */
-        .price-row { 
-            font-size: 10pt; font-weight: 700; 
-            line-height: 1; margin-bottom: 1mm;
-        }
+        .price-row { font-size: 10pt; font-weight: 700; line-height: 1; margin-bottom: 1mm; }
         .vnd { font-size: 5pt; font-weight: 400; margin-left: 1px; }
-
-        /* Variant: 5pt */
         .variant { font-size: 5pt; font-weight: 400; margin-bottom: 1mm; }
-
-        /* Batch: 4pt Bold & Italic */
         .batch { font-size: 4pt; font-weight: 700; font-style: italic; }
 
-        /* Size Box: 14pt & Bold */
         .size-box {
             background: black; color: white;
             width: 9mm; height: 9mm;
@@ -92,13 +94,17 @@
 
 <div class="label">
     <div class="sku" id="sku">WD0205</div>
-    <div class="name" id="name">Áo dài Trà Nguyệt - Áo dài dáng yếm cổ chi tiết dây cột nơ phom suông</div>
-    <div class="divider"></div>
-    <div class="instr" id="instr">
-        - Vui lòng phơi sản phẩm dưới bóng mát.<br>
-        - Tránh tiếp xúc với ánh nắng trực tiếp<br>
-        - Bảo quản sản phẩm ở nơi khô ráo và thoáng mát
+
+    <div class="content-area">
+        <div class="name" id="name">Áo dài Trà Nguyệt - Áo dài dáng yếm cổ chi tiết dây cột nơ phom suông</div>
+        <div class="divider"></div>
+        <div class="instr" id="instr">
+            - Vui lòng phơi sản phẩm dưới bóng mát.<br>
+            - Tránh tiếp xúc với ánh nắng trực tiếp<br>
+            - Bảo quản sản phẩm ở nơi khô ráo và thoáng mát
+        </div>
     </div>
+
     <div class="footer-area">
         <div class="info-group">
             <div class="price-row"><span id="price">540.000</span> <span class="vnd">VND</span></div>
@@ -111,18 +117,14 @@
 
 <script>
     const p = new URLSearchParams(window.location.search);
-    
-    // Cập nhật dữ liệu từ URL
     if(p.has('sku')) document.getElementById('sku').innerText = p.get('sku');
     if(p.has('name')) document.getElementById('name').innerText = p.get('name');
     if(p.has('size')) document.getElementById('size').innerText = p.get('size');
     if(p.has('variant')) document.getElementById('variant').innerText = p.get('variant');
     
-    // Định dạng giá tiền
     const rawPrice = p.get('price') || "540000";
     document.getElementById('price').innerText = Number(rawPrice).toLocaleString('de-DE');
 
-    // Cập nhật Batch & Ngày
     const batchCode = p.get('batch') || "XKQ12";
     const date = new Date().toISOString().split('T')[0];
     document.getElementById('batch').innerText = `${date} | ${batchCode}`;
