@@ -128,6 +128,12 @@
     if(p.has('size')) document.getElementById('size').innerText = p.get('size');
     if(p.has('variant')) document.getElementById('variant').innerText = p.get('variant');
     
+    // THÊM XỬ LÝ INSTR TẠI ĐÂY
+    if(p.has('instr')) {
+        // Thay thế dấu xuống dòng (newline) bằng thẻ <br> để hiển thị đúng trong HTML
+        document.getElementById('instr').innerHTML = p.get('instr').replace(/\n/g, '<br>');
+    }
+    
     const rawPrice = p.get('price') || "540000";
     document.getElementById('price').innerText = Number(rawPrice).toLocaleString('de-DE');
 
