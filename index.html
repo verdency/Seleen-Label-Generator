@@ -20,7 +20,8 @@
             box-sizing: border-box;
         }
 
-        .sku {
+        /* Đổi tên class .sku -> .model-sku */
+        .model-sku {
             position: absolute;
             top: 0.5mm; width: 100%; left: 0;
             text-align: center;
@@ -36,11 +37,14 @@
             overflow: hidden;
         }
 
-        .name { width: 100%; text-align: center; font-size: 5pt; font-weight: 400; line-height: 1.2; margin-bottom: 1.5mm; }
+        /* Đổi tên class .name -> .product-name */
+        .product-name { width: 100%; text-align: center; font-size: 5pt; font-weight: 400; line-height: 1.2; margin-bottom: 1.5mm; }
         .divider { width: 80%; border-top: 0.5pt dashed black; margin-bottom: 1.5mm; }
-        .instr { width: 100%; font-size: 5.5pt; line-height: 1.4; text-align: left; padding: 0 0.5mm; box-sizing: border-box; }
+        /* Đổi tên class .instr -> .instruction */
+        .instruction { width: 100%; font-size: 5.5pt; line-height: 1.4; text-align: left; padding: 0 0.5mm; box-sizing: border-box; }
 
-        .price-row { 
+        /* Đổi tên class .price-row -> .price */
+        .price { 
             position: absolute;
             bottom: 6mm; 
             left: 1mm;
@@ -52,7 +56,8 @@
 
         .vnd { font-size: 4pt; font-weight: 400; margin-left: 1px; }
 
-        .variant { 
+        /* Đổi tên class .variant -> .variant-info */
+        .variant-info { 
             position: absolute;
             bottom: 3.8mm; 
             left: 1mm;
@@ -60,7 +65,8 @@
             z-index: 10;
         }
 
-        .batch-container { 
+        /* Đổi tên class .batch-container -> .batch-info */
+        .batch-info { 
             position: absolute;
             bottom: 1.3mm; 
             left: 1mm;
@@ -71,27 +77,27 @@
         }
 
         .time-part { font-style: italic; font-weight: 400; }
-        .batch-part { font-style: italic; font-weight: 700; }
+        /* Đổi tên class .batch-part -> .batch */
+        .batch { font-style: italic; font-weight: 700; }
 
-        /* SỬA LỖI SIZE BOX TẠI ĐÂY */
-        .size-box {
+        /* Đổi tên class .size-box -> .size */
+        .size {
             position: absolute;
             bottom: 3mm; 
             right: 1mm; 
-            background: black !important; /* Dùng !important để giữ màu đen */
-            color: white !important;      /* Dùng !important để giữ màu trắng */
+            background: black !important;
+            color: white !important;
             width: 10mm; height: 7.5mm;
             display: flex; justify-content: center; align-items: center;
             font-size: 18pt; font-weight: 900;
             z-index: 10;
-            /* Lệnh quan trọng để trình duyệt in được màu nền */
             -webkit-print-color-adjust: exact; 
             print-color-adjust: exact;
         }
 
         @media print { 
             body { background: none; }
-            .size-box {
+            .size {
                 background: black !important;
                 color: white !important;
                 -webkit-print-color-adjust: exact;
@@ -102,54 +108,56 @@
 <body>
 
 <div class="label">
-    <div class="sku" id="sku">WD0205</div>
+    <div class="model-sku" id="model-sku">WD0205</div>
 
     <div class="content-area">
-        <div class="name" id="name">Áo dài Trà Nguyệt - Áo dài dáng yếm cổ chi tiết dây cột nơ phom suông</div>
+        <div class="product-name" id="product-name">Áo dài Trà Nguyệt - Áo dài dáng yếm cổ chi tiết dây cột nơ phom suông</div>
         <div class="divider"></div>
-        <div class="instr" id="instr">
+        <div class="instruction" id="instruction">
             - Vui lòng phơi sản phẩm dưới bóng mát.<br>
             - Tránh tiếp xúc với ánh nắng trực tiếp.<br>
             - Bảo quản sản phẩm ở nơi khô ráo và thoáng mát
         </div>
     </div>
 
-    <div class="price-row">
-        <span id="price">540.000</span>
+    <div class="price">
+        <span id="price-value">540.000</span>
         <span class="vnd">VND</span>
     </div>
 
-    <div class="variant" id="variant">S241 - Kem</div>
+    <div class="variant-info" id="variant">S241 - Kem</div>
 
-    <div class="batch-container">
+    <div class="batch-info">
         <span class="time-part" id="current-time"></span>
-        <span class="batch-part" id="batch-id"></span>
+        <span class="batch" id="batch"></span>
     </div>
 
-    <div class="size-box" id="size">XL</div>
+    <div class="size" id="size">XL</div>
 </div>
 
 <script>
-    const p = new URLSearchParams(window.location.search);
-    if(p.has('sku')) document.getElementById('sku').innerText = p.get('sku');
-    if(p.has('name')) document.getElementById('name').innerText = p.get('name');
-    if(p.has('size')) document.getElementById('size').innerText = p.get('size');
-    if(p.has('variant')) document.getElementById('variant').innerText = p.get('variant');
+    const params = new URLSearchParams(window.location.search);
     
-    if(p.has('instr')) {
-        document.getElementById('instr').innerHTML = p.get('instr').replace(/\n/g, '<br>');
+    // Đồng bộ hoàn toàn tham số URL và ID phần tử
+    if(params.has('model-sku')) document.getElementById('model-sku').innerText = params.get('model-sku');
+    if(params.has('product-name')) document.getElementById('product-name').innerText = params.get('product-name');
+    if(params.has('size')) document.getElementById('size').innerText = params.get('size');
+    if(params.has('variant')) document.getElementById('variant').innerText = params.get('variant');
+    
+    if(params.has('instruction')) {
+        document.getElementById('instruction').innerHTML = params.get('instruction').replace(/\n/g, '<br>');
     }
     
-    const rawPrice = p.get('price') || "540000";
-    document.getElementById('price').innerText = Number(rawPrice).toLocaleString('de-DE');
+    const rawPrice = params.get('price') || "540000";
+    document.getElementById('price-value').innerText = Number(rawPrice).toLocaleString('de-DE');
 
     const now = new Date();
     const datePart = now.toISOString().split('T')[0];
     const timePart = now.toTimeString().split(' ')[0];
     document.getElementById('current-time').innerText = `${datePart} ${timePart}`;
 
-    const batchCode = p.get('batch') || "XKQ12";
-    document.getElementById('batch-id').innerText = `| ${batchCode}`;
+    const batchCode = params.get('batch') || "XKQ12";
+    document.getElementById('batch').innerText = `| ${batchCode}`;
 </script>
 
 </body>
