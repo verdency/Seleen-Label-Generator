@@ -17,10 +17,10 @@
             background: white;
             position: relative;
             overflow: hidden;
-            padding: 1mm 2mm;
             box-sizing: border-box;
         }
 
+        /* SKU và Content Area giữ nguyên */
         .sku {
             position: absolute;
             top: 0.5mm; width: 100%; left: 0;
@@ -31,80 +31,47 @@
 
         .content-area {
             position: absolute;
-            top: 7mm;
-            left: 0;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-sizing: border-box;
+            top: 7mm; left: 0; width: 100%;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        .name {
-            width: 100%;
-            text-align: center;
-            font-size: 5pt; font-weight: 400;
-            line-height: 1.2;
-            margin-bottom: 1mm;
-        }
+        .name { width: 100%; text-align: center; font-size: 5pt; font-weight: 400; line-height: 1.2; margin-bottom: 1mm; }
+        .divider { width: 80%; border-top: 0.5pt dashed black; margin-bottom: 1mm; }
+        .instr { width: 100%; font-size: 5.5pt; line-height: 1.4; text-align: left; padding: 0 2mm; box-sizing: border-box; }
 
-        .divider {
-            width: 80%;
-            border-top: 0.5pt dashed black;
-            margin-bottom: 1mm;
-        }
+        /* TÁCH ĐỘC LẬP CÁC THÀNH PHẦN FOOTER */
 
-        .instr {
-            width: 100%;
-            font-size: 5.5pt; 
-            line-height: 1.4;
-            text-align: left;
-            padding: 0 2mm;
-            box-sizing: border-box;
-        }
-
-        /* Footer Section - Các thành phần độc lập */
-        .footer-area {
-            position: absolute;
-            bottom: 2mm; left: 2mm; right: 2mm;
-            height: 12mm;
-            display: flex; justify-content: space-between; align-items: flex-end;
-        }
-
-        .info-group { text-align: left; }
-
-        /* Price row và VND nằm trên cùng một hàng */
         .price-row { 
-            font-size: 10pt; 
-            font-weight: 700; 
-            line-height: 1; 
-            margin-bottom: 1mm;
-            display: flex; 
-            align-items: baseline; /* Giúp chữ VND nằm ngang hàng với chân số */
+            position: absolute;
+            bottom: 8.5mm; /* Cách đáy 8.5mm */
+            left: 2mm;
+            font-size: 10pt; font-weight: 700; 
+            display: flex; align-items: baseline;
         }
 
         .vnd { 
-            font-size: 5pt; 
-            font-weight: 400; 
-            margin-left: 2px; 
-            display: inline-block; /* Đảm bảo không bị nhảy dòng */
+            font-size: 5pt; font-weight: 400; 
+            margin-left: 2px;
         }
 
         .variant { 
-            font-size: 5pt; 
-            font-weight: 400; 
-            margin-bottom: 1mm; 
-            display: block; 
+            position: absolute;
+            bottom: 5.5mm; /* Cách đáy 5.5mm */
+            left: 2mm;
+            font-size: 5pt; font-weight: 400; 
         }
 
         .batch { 
-            font-size: 4pt; 
-            font-weight: 700; 
-            font-style: italic; 
-            display: block;
+            position: absolute;
+            bottom: 2mm; /* Cách đáy 2mm */
+            left: 2mm;
+            font-size: 4pt; font-weight: 700; font-style: italic; 
         }
 
         .size-box {
+            position: absolute;
+            bottom: 2mm; /* Cách đáy 2mm */
+            right: 2mm;  /* Sát mép phải */
             background: black; color: white;
             width: 9mm; height: 9mm;
             display: flex; justify-content: center; align-items: center;
@@ -129,17 +96,16 @@
         </div>
     </div>
 
-    <div class="footer-area">
-        <div class="info-group">
-            <div class="price-row">
-                <span id="price">540.000</span>
-                <span class="vnd">VND</span>
-            </div>
-            <div class="variant" id="variant">S241 - Kem</div>
-            <div class="batch" id="batch">2026-04-21 | XKQ12</div>
-        </div>
-        <div class="size-box" id="size">S</div>
+    <div class="price-row">
+        <span id="price">540.000</span>
+        <span class="vnd">VND</span>
     </div>
+
+    <div class="variant" id="variant">S241 - Kem</div>
+
+    <div class="batch" id="batch">2026-04-21 | XKQ12</div>
+
+    <div class="size-box" id="size">S</div>
 </div>
 
 <script>
