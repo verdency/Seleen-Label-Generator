@@ -2,117 +2,197 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <title>Seleen Label Generator - 30x50mm</title>
     <style>
-        /* Exact physical dimensions for thermal printing */
+        /* Thiết lập trang in chính xác 30x50mm */
         @page { size: 30mm 50mm; margin: 0; }
         
         body { 
-            font-family: 'Segoe UI', sans-serif; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; padding: 0; 
             background: #f0f0f0;
             display: flex; justify-content: center;
         }
 
-        .label {
-            width: 30mm; height: 50mm;
+        .label-container {
+            width: 30mm;
+            height: 50mm;
             background: white;
-            position: relative; /* Absolute base */
+            padding: 1.5mm 2.5mm;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
             overflow: hidden;
         }
 
-        /* SKU: Fixed at the top */
-        .sku {
-            position: absolute;
-            top: 2mm; width: 100%;
-            text-align: center;
-            font-size: 24pt; font-weight: 800;
+        /* SKU - Rất to và đậm ở trên cùng */
+        .sku-header { 
+            font-size: 26pt; 
+            font-weight: 800; 
+            margin: 0; 
             line-height: 1;
-        }
-
-        /* Product Name: Centered below SKU */
-        .name {
-            position: absolute;
-            top: 13mm; width: 100%;
-            padding: 0 2mm; box-sizing: border-box;
             text-align: center;
-            font-size: 7.2pt; line-height: 1.2;
+            letter-spacing: -0.5px;
         }
 
-        /* Divider: Fixed position */
-        .line {
-            position: absolute;
-            top: 22mm; left: 10%; width: 80%;
-            border-top: 1px dashed black;
+        /* Tên sản phẩm - Căn giữa */
+        .product-name { 
+            font-size: 7.5pt; 
+            text-align: center; 
+            margin: 1.5mm 0 1mm 0; 
+            font-weight: 400;
+            line-height: 1.2;
+            width: 100%;
+            min-height: 6mm;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Instructions: Middle block */
-        .instr {
-            position: absolute;
-            top: 24mm; left: 2.5mm; width: 25mm;
-            font-size: 6.8pt; line-height: 1.4;
+        .divider { 
+            width: 90%; 
+            border-top: 1px dashed #000; 
+            margin-bottom: 1.5mm; 
         }
 
-        /* Bottom Section: Grouped for stability */
-        .bottom-area {
-            position: absolute;
-            bottom: 2mm; left: 2mm; right: 2mm;
-            height: 12mm;
-            display: flex; justify-content: space-between; align-items: flex-end;
+        /* Hướng dẫn sử dụng - Căn lề trái, chữ nhỏ */
+        .instructions { 
+            font-size: 6.8pt; 
+            align-self: flex-start; 
+            line-height: 1.4; 
+            flex-grow: 1;
+            font-weight: 400;
+            text-align: left;
         }
 
-        .price-box { text-align: left; }
-        .price { font-size: 15pt; font-weight: 700; line-height: 1; }
-        .vnd { font-size: 6pt; margin-left: 0.5mm; }
-        .variant { font-size: 7.5pt; margin: 1mm 0; white-space: nowrap; }
-        .meta { font-size: 5.5pt; font-style: italic; color: #333; }
+        /* Phần đáy nhãn - Cố định vị trí */
+        .bottom-section {
+            width: 100%;
+            height: 13mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            position: relative;
+        }
 
-        /* Black Size Box: Fixed 10mm square */
+        .price-info { 
+            text-align: left; 
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .price-row { display: flex; align-items: baseline; }
+        .price { font-size: 16pt; font-weight: 700; line-height: 1; }
+        .currency { font-size: 6.5pt; font-weight: 600; margin-left: 1mm; }
+
+        .variant-text { font-size: 7.5pt; margin: 1mm 0 0.5mm 0; font-weight: 400; }
+        
+        .meta-data { 
+            font-size: 5.5pt; 
+            font-style: italic; 
+            color: #000; 
+            white-space: nowrap;
+        }
+
+        /* Ô kích thước màu đen (Size Box) */
         .size-box {
-            background: black; color: white;
-            width: 10mm; height: 10mm;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 20pt; font-weight: 900;
+            background: black;
+            color: white;
+            width: 10mm;
+            height: 10mm;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 21pt;
+            font-weight: 900;
         }
 
-        @media print { body { background: none; } }
+        /* Chế độ xem trên màn hình */
+        @media screen {
+            body { padding: 20px; }
+            .label-container { border: 1px solid #ccc; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        }
+
+        /* Chế độ in */
+        @media print {
+            body { background: none; }
+            .label-container { border: none; }
+        }
     </style>
 </head>
 <body>
 
-<div class="label">
-    <div class="sku" id="sku">WT0209</div>
-    <div class="name" id="name">Set áo tay dài cài nút mỏng cùng áo quây thắt nơ</div>
-    <div class="line"></div>
-    <div class="instr" id="instr">
-        - Không giặt chung 2 áo (áo xám).<br>
-        - Sử dụng túi giặt khi giặt máy.<br>
-        - Giặt nước lạnh dưới 30°C.
+<div class="label-container">
+    <div class="sku-header" id="disp-sku">WT0080</div>
+    
+    <div class="product-name" id="disp-name">Set áo tay dài cài nút mỏng cùng áo quây thắt nơ</div>
+    
+    <div class="divider"></div>
+
+    <div class="instructions" id="disp-instr">
+        - Không giặt chung 2 áo vì có thể bị lem màu (áo xám).<br>
+        - Nên sử dụng túi giặt khi giặt máy.<br>
+        - Giặt với nước lạnh dưới 30°C.
     </div>
-    <div class="bottom-area">
-        <div class="price-box">
-            <div class="price"><span id="price">350.000</span><span class="vnd">VND</span></div>
-            <div class="variant" id="variant">K104 - Xám đậm</div>
-            <div class="meta" id="meta">2026-04-14 | <b>XKQ12</b></div>
+
+    <div class="bottom-section">
+        <div class="price-info">
+            <div class="price-row">
+                <span class="price" id="disp-price">350,000</span>
+                <span class="currency">VND</span>
+            </div>
+            <div class="variant-text" id="disp-variant">K104 - Xám đậm</div>
+            <div class="meta-data" id="disp-meta">2026-04-21 17:52:29 | <b>XKQ12</b></div>
         </div>
-        <div class="size-box" id="size">M</div>
+        <div class="size-box" id="disp-size">S</div>
     </div>
 </div>
 
 <script>
-    const p = new URLSearchParams(window.location.search);
-    
-    // Fill data from URL or use reference defaults
-    if(p.has('sku')) document.getElementById('sku').innerText = p.get('sku');
-    if(p.has('name')) document.getElementById('name').innerText = p.get('name');
-    if(p.has('size')) document.getElementById('size').innerText = p.get('size');
-    if(p.has('variant')) document.getElementById('variant').innerText = p.get('variant');
-    
-    const rawPrice = p.get('price') || "350000";
-    document.getElementById('price').innerText = Number(rawPrice).toLocaleString('de-DE');
+    // Lấy dữ liệu từ URL Parameters
+    const params = new URLSearchParams(window.location.search);
 
-    // Auto-shrink SKU if it exceeds standard length to avoid clipping
-    const sku = document.getElementById('sku');
-    if (sku.innerText.length > 7) sku.style.fontSize = "16pt";
+    // Cập nhật SKU
+    if (params.has('sku')) document.getElementById('disp-sku').innerText = params.get('sku');
+    
+    // Cập nhật Tên sản phẩm
+    if (params.has('name')) document.getElementById('disp-name').innerText = params.get('name');
+    
+    // Cập nhật Giá (Tự động định dạng dấu phẩy)
+    if (params.has('price')) {
+        const p = parseInt(params.get('price'));
+        document.getElementById('disp-price').innerText = p.toLocaleString('en-US');
+    }
+
+    // Cập nhật Size
+    if (params.has('size')) document.getElementById('disp-size').innerText = params.get('size');
+
+    // Cập nhật Biến thể (Màu sắc/Mã màu)
+    if (params.has('variant')) document.getElementById('disp-variant').innerText = params.get('variant');
+
+    // Cập nhật Hướng dẫn (Hỗ trợ xuống dòng bằng %0A trong URL)
+    if (params.has('instr')) {
+        const instrRaw = params.get('instr');
+        document.getElementById('disp-instr').innerHTML = instrRaw.replace(/\n/g, '<br>');
+    }
+
+    // Cập nhật Metadata (Thời gian & Batch)
+    const batch = params.get('batch') || "XKQ12";
+    const now = new Date();
+    const timeStr = now.getFullYear() + "-" + 
+                    String(now.getMonth() + 1).padStart(2, '0') + "-" + 
+                    String(now.getDate()).padStart(2, '0') + " " + 
+                    now.toTimeString().split(' ')[0];
+    document.getElementById('disp-meta').innerHTML = `${timeStr} | <b>${batch}</b>`;
+
+    // Tự động điều chỉnh cỡ chữ SKU nếu quá dài
+    const skuEl = document.getElementById('disp-sku');
+    if (skuEl.innerText.length > 6) {
+        skuEl.style.fontSize = "20pt";
+    }
 </script>
 
 </body>
