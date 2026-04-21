@@ -28,10 +28,14 @@
             line-height: 1;
         }
 
+        /* CHỈNH SỬA TẠI ĐÂY: Giới hạn chiều cao */
         .content-area {
             position: absolute;
             top: 7mm; left: 0; width: 100%;
+            /* max-height tính toán: 50mm tổng - 7mm top - 11mm chân nhãn = 32mm */
+            max-height: 32mm; 
             display: flex; flex-direction: column; align-items: center;
+            overflow: hidden; /* Cắt nội dung thừa nếu dài quá vạch đỏ */
         }
 
         .name { width: 100%; text-align: center; font-size: 5pt; font-weight: 400; line-height: 1.2; margin-bottom: 1.5mm; }
@@ -44,25 +48,28 @@
             left: 1mm;
             font-size: 10pt; font-weight: 700; 
             display: flex; align-items: baseline;
+            background: white; /* Đảm bảo che phần chữ thừa nếu có */
+            z-index: 10;
         }
 
         .vnd { font-size: 4pt; font-weight: 400; margin-left: 2px; }
 
         .variant { 
             position: absolute;
-            bottom: 4mm; 
+            bottom: 3.6mm; 
             left: 1mm;
             font-size: 5pt; font-weight: 400; 
+            z-index: 10;
         }
 
-        /* Tách Batch thành 2 phần định dạng */
         .batch-container { 
             position: absolute;
-            bottom: 1.3mm; 
+            bottom: 1mm; 
             left: 1mm;
             font-size: 4pt;
             display: flex;
             gap: 2px;
+            z-index: 10;
         }
 
         .time-part { font-style: italic; font-weight: 400; }
@@ -70,12 +77,13 @@
 
         .size-box {
             position: absolute;
-            bottom: 1mm; 
+            bottom: 3mm; 
             right: 1mm; 
             background: black; color: white;
             width: 9mm; height: 8mm;
             display: flex; justify-content: center; align-items: center;
             font-size: 18pt; font-weight: 1000;
+            z-index: 10;
         }
 
         @media print { body { background: none; } }
@@ -91,6 +99,8 @@
         <div class="divider"></div>
         <div class="instr" id="instr">
             - Vui lòng phơi sản phẩm dưới bóng mát.<br>
+            - Tránh tiếp xúc với ánh nắng trực tiếp<br>
+            - Tránh tiếp xúc với ánh nắng trực tiếp<br>
             - Tránh tiếp xúc với ánh nắng trực tiếp<br>
             - Bảo quản sản phẩm ở nơi khô ráo và thoáng mát
         </div>
@@ -121,13 +131,11 @@
     const rawPrice = p.get('price') || "540000";
     document.getElementById('price').innerText = Number(rawPrice).toLocaleString('de-DE');
 
-    // Xử lý thời gian thực tế: YYYY-MM-DD HH:mm:ss
     const now = new Date();
     const datePart = now.toISOString().split('T')[0];
     const timePart = now.toTimeString().split(' ')[0];
     document.getElementById('current-time').innerText = `${datePart} ${timePart}`;
 
-    // Xử lý Batch ID
     const batchCode = p.get('batch') || "XKQ12";
     document.getElementById('batch-id').innerText = `| ${batchCode}`;
 </script>
