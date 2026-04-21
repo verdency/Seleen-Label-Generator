@@ -72,7 +72,7 @@
             position: absolute;
             bottom: 3.6mm; 
             left: 1mm;
-            font-size: 5pt; font-weight: 400; 
+            font-size: 4.6pt; font-weight: 400; 
             z-index: 10;
         }
 
@@ -97,8 +97,8 @@
             overflow: hidden; /* Tránh tràn nếu text quá cực đoan */
         }
 
-        .time-part { font-style: italic; font-weight: 400; }
         .variant { font-style: italic; font-weight: 700; }
+        .time-part { font-style: italic; font-weight: 400; }
 
         .size {
             position: absolute;
@@ -145,11 +145,11 @@
         <span class="vnd">VND</span>
     </div>
 
-    <div class="batch" id="batch">S241 - Kem</div>
+    <div class="batch" id="batch">SE-260330-0202-L122-FL3</div>
 
     <div class="variant-info">
-        <span class="time-part" id="current-time"></span>
         <span class="variant" id="variant"></span>
+        <span class="time-part" id="current-time"></span>
     </div>
 
     <div class="size" id="size">XL</div>
@@ -175,8 +175,8 @@
     const timePart = now.toTimeString().split(' ')[0];
     document.getElementById('current-time').innerText = `${datePart} ${timePart}`;
 
-    const variantCode = params.get('variant') || "SE-260421-0212-L10";
-    document.getElementById('variant').innerText = `| ${variantCode}`;
+    const variantCode = params.get('variant') || "K124 - Đen";
+    document.getElementById('variant').innerText = ` ${variantCode} |`;
 
     // XỬ LÝ QR CODE ĐỘNG
     const qrValue = params.get('qr-code') || "";
