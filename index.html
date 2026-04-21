@@ -20,7 +20,6 @@
             box-sizing: border-box;
         }
 
-        /* SKU và Content Area giữ nguyên */
         .sku {
             position: absolute;
             top: 0.5mm; width: 100%; left: 0;
@@ -39,39 +38,40 @@
         .divider { width: 80%; border-top: 0.5pt dashed black; margin-bottom: 1.5mm; }
         .instr { width: 100%; font-size: 5.5pt; line-height: 1.4; text-align: left; padding: 0 0.5mm; box-sizing: border-box; }
 
-        /* TÁCH ĐỘC LẬP CÁC THÀNH PHẦN FOOTER */
-
         .price-row { 
             position: absolute;
-            bottom: 8.5mm; /* Cách đáy 8.5mm */
-            left: 2mm;
+            bottom: 6mm; 
+            left: 1mm;
             font-size: 10pt; font-weight: 700; 
             display: flex; align-items: baseline;
         }
 
-        .vnd { 
-            font-size: 5pt; font-weight: 400; 
-            margin-left: 2px;
-        }
+        .vnd { font-size: 4pt; font-weight: 400; margin-left: 2px; }
 
         .variant { 
             position: absolute;
-            bottom: 5.5mm; /* Cách đáy 5.5mm */
+            bottom: 4mm; 
             left: 1mm;
             font-size: 5pt; font-weight: 400; 
         }
 
-        .batch { 
+        /* Tách Batch thành 2 phần định dạng */
+        .batch-container { 
             position: absolute;
-            bottom: 2mm; /* Cách đáy 2mm */
+            bottom: 1.3mm; 
             left: 1mm;
-            font-size: 4pt; font-weight: 700; font-style: italic; 
+            font-size: 4pt;
+            display: flex;
+            gap: 2px;
         }
+
+        .time-part { font-style: italic; font-weight: 400; }
+        .batch-part { font-style: italic; font-weight: 700; }
 
         .size-box {
             position: absolute;
-            bottom: 1mm; /* Cách đáy 2mm */
-            right: 1mm;  /* Sát mép phải */
+            bottom: 1mm; 
+            right: 1mm; 
             background: black; color: white;
             width: 7mm; height: 7mm;
             display: flex; justify-content: center; align-items: center;
@@ -103,7 +103,10 @@
 
     <div class="variant" id="variant">S241 - Kem</div>
 
-    <div class="batch" id="batch">2026-04-21 | XKQ12</div>
+    <div class="batch-container">
+        <span class="time-part" id="current-time"></span>
+        <span class="batch-part" id="batch-id"></span>
+    </div>
 
     <div class="size-box" id="size">S</div>
 </div>
@@ -118,9 +121,15 @@
     const rawPrice = p.get('price') || "540000";
     document.getElementById('price').innerText = Number(rawPrice).toLocaleString('de-DE');
 
+    // Xử lý thời gian thực tế: YYYY-MM-DD HH:mm:ss
+    const now = new Date();
+    const datePart = now.toISOString().split('T')[0];
+    const timePart = now.toTimeString().split(' ')[0];
+    document.getElementById('current-time').innerText = `${datePart} ${timePart}`;
+
+    // Xử lý Batch ID
     const batchCode = p.get('batch') || "XKQ12";
-    const date = new Date().toISOString().split('T')[0];
-    document.getElementById('batch').innerText = `${date} | ${batchCode}`;
+    document.getElementById('batch-id').innerText = `| ${batchCode}`;
 </script>
 
 </body>
