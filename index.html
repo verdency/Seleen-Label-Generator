@@ -21,7 +21,6 @@
             box-sizing: border-box;
         }
 
-        /* SKU cố định ở trên cùng */
         .sku {
             position: absolute;
             top: 0.5mm; width: 100%; left: 0;
@@ -30,16 +29,14 @@
             line-height: 1;
         }
 
-        /* Nhóm nội dung động bắt đầu từ vị trí 7mm */
         .content-area {
             position: absolute;
-            top: 7mm; /* Vị trí cố định của phần Name */
+            top: 7mm;
             left: 0;
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 0mm;
             box-sizing: border-box;
         }
 
@@ -48,25 +45,25 @@
             text-align: center;
             font-size: 5pt; font-weight: 400;
             line-height: 1.2;
-            margin-bottom: 1mm; /* Khoảng cách dưới tên */
+            margin-bottom: 1mm;
         }
 
         .divider {
             width: 80%;
             border-top: 0.5pt dashed black;
-            margin-bottom: 1mm; /* Khoảng cách dưới đường kẻ */
+            margin-bottom: 1mm;
         }
 
         .instr {
             width: 100%;
             font-size: 5.5pt; 
             line-height: 1.4;
-            text-align: left; /* Căn lề trái cho hướng dẫn */
-            padding: 0 0mm;
+            text-align: left;
+            padding: 0 2mm;
             box-sizing: border-box;
         }
 
-        /* Footer giữ cố định dưới đáy */
+        /* Footer Section - Các thành phần độc lập */
         .footer-area {
             position: absolute;
             bottom: 2mm; left: 2mm; right: 2mm;
@@ -75,10 +72,37 @@
         }
 
         .info-group { text-align: left; }
-        .price-row { font-size: 10pt; font-weight: 700; line-height: 1; margin-bottom: 1mm; }
-        .vnd { font-size: 5pt; font-weight: 400; margin-left: 1px; }
-        .variant { font-size: 5pt; font-weight: 400; margin-bottom: 1mm; }
-        .batch { font-size: 4pt; font-weight: 700; font-style: italic; }
+
+        /* Price row và VND nằm trên cùng một hàng */
+        .price-row { 
+            font-size: 10pt; 
+            font-weight: 700; 
+            line-height: 1; 
+            margin-bottom: 1mm;
+            display: flex; 
+            align-items: baseline; /* Giúp chữ VND nằm ngang hàng với chân số */
+        }
+
+        .vnd { 
+            font-size: 5pt; 
+            font-weight: 400; 
+            margin-left: 2px; 
+            display: inline-block; /* Đảm bảo không bị nhảy dòng */
+        }
+
+        .variant { 
+            font-size: 5pt; 
+            font-weight: 400; 
+            margin-bottom: 1mm; 
+            display: block; 
+        }
+
+        .batch { 
+            font-size: 4pt; 
+            font-weight: 700; 
+            font-style: italic; 
+            display: block;
+        }
 
         .size-box {
             background: black; color: white;
@@ -107,7 +131,10 @@
 
     <div class="footer-area">
         <div class="info-group">
-            <div class="price-row"><span id="price">540.000</span> <span class="vnd">VND</span></div>
+            <div class="price-row">
+                <span id="price">540.000</span>
+                <span class="vnd">VND</span>
+            </div>
             <div class="variant" id="variant">S241 - Kem</div>
             <div class="batch" id="batch">2026-04-21 | XKQ12</div>
         </div>
