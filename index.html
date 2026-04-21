@@ -172,7 +172,7 @@
     const timePart = now.toTimeString().split(' ')[0];
     document.getElementById('current-time').innerText = `${datePart} ${timePart}`;
 
-    const batchCode = params.get('batch') || "XKQ12";
+    const batchCode = params.get('batch') || "";
     document.getElementById('batch').innerText = `| ${batchCode}`;
 
     // XỬ LÝ QR CODE ĐỘNG
