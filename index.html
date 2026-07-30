@@ -2,13 +2,14 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <title>Tem treo sản phẩm 30×50mm — bản thử</title>
+    <script src="https://cdn.jsdelivr.net/npm/bwip-js@3.0.4/dist/bwip-js-min.js"></script>
     <style>
         @page { size: 30mm 50mm; margin: 0; }
-        
-        body { 
+
+        body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0; padding: 0; 
+            margin: 0; padding: 0;
             display: flex; justify-content: center;
             background: #f4f4f4;
             -webkit-font-smoothing: antialiased;
@@ -23,6 +24,15 @@
             box-sizing: border-box;
         }
 
+        /* Khối chữ phía trên (title + mô tả) — GIỮ NGUYÊN như bản gốc,
+           chỉ lồng vào khung hẹp hơn để chừa chỗ cho dải barcode bên phải. */
+        .top-wrap {
+            position: absolute;
+            top: 0; left: 0;
+            width: calc(100% - 5mm);   /* chừa 5mm bên phải cho barcode */
+            height: 100%;
+        }
+
         .model-sku {
             position: absolute;
             top: 0.5mm; width: 100%; left: 0;
@@ -35,32 +45,32 @@
         .content-area {
             position: absolute;
             top: 7mm; left: 0; width: 100%;
-            max-height: 32mm; 
+            max-height: 32mm;
             display: flex; flex-direction: column; align-items: center;
             overflow: hidden;
         }
 
-        .product-name { 
-            width: 100%; text-align: center; font-size: 5pt; 
-            font-weight: 400; line-height: 1.1; margin-bottom: 1mm; 
-        }
-        
-        .divider { 
-            width: 80%; 
-            border-top: 0.6pt dashed black; 
-            margin-bottom: 1.5mm; 
+        .product-name {
+            width: 100%; text-align: center; font-size: 5pt;
+            font-weight: 400; line-height: 1.1; margin-bottom: 1mm;
         }
 
-        .instruction { 
-            width: 100%; font-size: 6pt; line-height: 1.3; 
-            text-align: left; padding: 0 0.5mm; box-sizing: border-box; 
+        .divider {
+            width: 80%;
+            border-top: 0.6pt dashed black;
+            margin-bottom: 1.5mm;
         }
 
-        .price { 
+        .instruction {
+            width: 100%; font-size: 6pt; line-height: 1.3;
+            text-align: left; padding: 0 0.5mm; box-sizing: border-box;
+        }
+
+        .price {
             position: absolute;
-            bottom: 6mm; 
+            bottom: 6mm;
             left: 1mm;
-            font-size: 9.7pt; font-weight: 700; 
+            font-size: 9.7pt; font-weight: 700;
             display: flex; align-items: baseline;
             background: white;
             z-index: 10;
@@ -68,33 +78,25 @@
 
         .vnd { font-size: 4pt; font-weight: 400; margin-left: 0.5px; }
 
-        .batch { 
+        .batch {
             position: absolute;
-            bottom: 3.8mm; 
+            bottom: 3.8mm;
             left: 1mm;
-            font-size: 4.6pt; font-weight: 400; 
+            font-size: 4.6pt; font-weight: 400;
             z-index: 10;
         }
 
-        /* Phần chứa QR Code bên phải lề dưới */
-        #qrcode {
+        .variant-info {
             position: absolute;
-            bottom: 11mm; 
-            right: 1mm;
-            z-index: 20;
-        }
-
-        .variant-info { 
-            position: absolute;
-            bottom: 1.3mm; 
+            bottom: 1.3mm;
             left: 1mm;
-            width: calc(100% - 2mm); /* Kéo dãn chiều ngang ra sát mép label (30mm) */
+            width: calc(100% - 2mm);
             font-size: 5pt;
             display: flex;
             gap: 2px;
             z-index: 10;
-            white-space: nowrap; /* Giữ văn bản trên một dòng */
-            overflow: hidden; /* Tránh tràn nếu text quá cực đoan */
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         .variant { font-style: italic; font-weight: 600; }
@@ -102,46 +104,73 @@
 
         .size {
             position: absolute;
-            bottom: 4mm; 
-            right: .5mm; 
+            bottom: 4mm;
+            right: .5mm;
             background: black !important;
             color: white !important;
             width: 9.5mm; height: 7.5mm;
             display: flex; justify-content: center; align-items: center;
             font-size: 18pt; font-weight: 900;
             z-index: 10;
-            -webkit-print-color-adjust: exact; 
+            -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
             shape-rendering: crispEdges;
         }
 
-        @media print { 
+        /* --- Dải barcode dọc (đúng ô đỏ trong ảnh mẫu) ---
+           2 ĐẦU NGẮN (trên/dưới, sau khi xoay) = vùng trắng đầu/cuối mã
+           (quiet zone) — máy quét CẦN vùng này nguyên vẹn để nhận biết
+           điểm bắt đầu/kết thúc, nên đẩy xa mép giấy trên/dưới.
+           2 CẠNH DÀI (trái/phải, sau khi xoay) chạy song song mép phải —
+           bị xén một chút vẫn còn đủ vạch để đọc, nên để sát lề như cũ. */
+        .barcode-strip {
+            position: absolute;
+            top: 1.8mm;      /* đầu mã — cách mép trên một khoảng an toàn */
+            right: 0.3mm;    /* cạnh dài — vẫn sát lề phải, xén nhẹ vẫn quét được */
+            width: 4mm;      /* độ dày vạch — đã thu hẹp tối đa */
+            height: 33mm;    /* chiều dài mã, chừa khoảng trống 2 đầu */
+        }
+        .barcode-inner {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(90deg);
+        }
+        #barcode {
+            display: block;
+            width: 33mm;   /* = height của .barcode-strip (trước khi xoay) */
+            height: 4mm;   /* = width của .barcode-strip (trước khi xoay) */
+        }
+
+        @media print {
             body { background: none; width: 30mm; height: 50mm; }
             .size { background: black !important; -webkit-print-color-adjust: exact; }
-            /* Giữ nguyên QR Code khi in */
-            #qrcode img { display: block; }
+            #barcode { display: block; }
         }
     </style>
 </head>
 <body>
 
 <div class="label">
-    <div class="model-sku" id="model-sku">WD0205</div>
+    <div class="top-wrap">
+        <div class="model-sku" id="model-sku">WD0205</div>
 
-    <div class="content-area">
-        <div class="product-name" id="product-name">Áo dài Trà Nguyệt - Áo dài dáng yếm cổ chi tiết dây cột nơ phom suông</div>
-        <div class="divider"></div>
-        <div class="instruction" id="instruction">
-            - Vui lòng phơi sản phẩm dưới bóng mát.<br>
-            - Tránh tiếp xúc với ánh nắng trực tiếp.<br>
-            - Bảo quản sản phẩm ở nơi khô ráo và thoáng mát
+        <div class="content-area">
+            <div class="product-name" id="product-name">Áo dài Trà Nguyệt - Áo dài dáng yếm cổ chi tiết dây cột nơ phom suông</div>
+            <div class="divider"></div>
+            <div class="instruction" id="instruction">
+                - Vui lòng phơi sản phẩm dưới bóng mát.<br>
+                - Tránh tiếp xúc với ánh nắng trực tiếp.<br>
+                - Bảo quản sản phẩm ở nơi khô ráo và thoáng mát
+            </div>
         </div>
     </div>
 
-    <div id="qrcode"></div>
+    <div class="barcode-strip">
+        <div class="barcode-inner"><canvas id="barcode"></canvas></div>
+    </div>
 
     <div class="price">
-        <span id="price-value">540.000</span>
+        <span id="price-value">1.000.300</span>
         <span class="vnd">VND</span>
     </div>
 
@@ -157,37 +186,40 @@
 
 <script>
     const params = new URLSearchParams(window.location.search);
-    
-    if(params.has('model-sku')) document.getElementById('model-sku').innerText = params.get('model-sku');
-    if(params.has('product-name')) document.getElementById('product-name').innerText = params.get('product-name');
-    if(params.has('size')) document.getElementById('size').innerText = params.get('size');
-    if(params.has('batch')) document.getElementById('batch').innerText = params.get('batch');
-    
-    if(params.has('instruction')) {
+
+    if (params.has('model-sku')) document.getElementById('model-sku').innerText = params.get('model-sku');
+    if (params.has('product-name')) document.getElementById('product-name').innerText = params.get('product-name');
+    if (params.has('size')) document.getElementById('size').innerText = params.get('size');
+    if (params.has('batch')) document.getElementById('batch').innerText = params.get('batch');
+
+    if (params.has('instruction')) {
         document.getElementById('instruction').innerHTML = params.get('instruction').replace(/\n/g, '<br>');
     }
-    
-    const rawPrice = params.get('price') || "1000300";
-    document.getElementById('price-value').innerText = Number(rawPrice).toLocaleString('en-US');
 
-    const now = new Date();
-    const datePart = now.toISOString().split('T')[0];
-    const timePart = now.toTimeString().split(' ')[0];
-    document.getElementById('current-time').innerText = `${datePart} ${timePart}`;
+    // Giá theo định dạng Việt Nam: 1.000.300
+    const rawPrice = params.get('price') || "1000300";
+    document.getElementById('price-value').innerText = Number(rawPrice).toLocaleString('vi-VN');
+
+    // Giờ in theo giờ Việt Nam (UTC+7)
+    const vn = new Date(Date.now() + 7 * 3600 * 1000);
+    document.getElementById('current-time').innerText = vn.toISOString().slice(0, 16).replace('T', ' ');
 
     const variantCode = params.get('variant') || "K124 - Đen";
     document.getElementById('variant').innerText = ` ${variantCode} |`;
 
-    // XỬ LÝ QR CODE ĐỘNG
-    const qrValue = params.get('qr-code') || "";
-    new QRCode(document.getElementById("qrcode"), {
-        text: qrValue,
-        width: 34, // Khoảng 9mm
-        height: 34,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.L // Mức độ sửa lỗi thấp nhất để hình QR đơn giản, sắc nét khi in nhỏ
-    });
+    // Barcode Code128 thay QR: mặc định lấy mã SKU để khớp với công cụ kiểm đóng hàng.
+    const skuValue = params.get('qr-code') || params.get('sku') || "SE_WD0205_K124_XL";
+    try {
+        bwipjs.toCanvas('barcode', {
+            bcid: 'code128',
+            text: skuValue,
+            scale: 3,
+            height: 8,
+            includetext: false,
+        });
+    } catch (e) {
+        console.error(e);
+    }
 </script>
 
 </body>
