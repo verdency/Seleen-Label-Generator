@@ -35,7 +35,7 @@
            QR thay Code128: SKU 16-17 ký tự khiến Code128 nén vào tem 30mm
            quá mỏng (~0.15mm/vạch, dưới ngưỡng in rõ ~0.19-0.25mm). QR ở
            cùng diện tích cho module ~0.2mm — quét được, đã test thực tế. */
-        .bottom-row { flex: none; display: flex; align-items: flex-end; gap: 1.2mm; margin-top: 1mm; }
+        .bottom-row { flex: none; display: flex; align-items: flex-end; gap: 2.4mm; margin-top: 1mm; }
         .info-col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.2mm; overflow: hidden; }
         .price { font-size: 8.5pt; font-weight: 700; display: flex; align-items: baseline; line-height: 1; white-space: nowrap; margin-bottom: 0.3mm; }
         .vnd { font-size: 3.8pt; font-weight: 400; margin-left: 0.5px; }
@@ -43,7 +43,8 @@
         .variant-line { font-size: 4.8pt; font-style: italic; font-weight: 600; line-height: 1; }
         .time-line { font-size: 4.2pt; font-style: italic; font-weight: 400; line-height: 1; }
 
-        .qr-col { flex: none; }
+        /* margin-bottom thêm lề dưới cho QR, tránh máy in xén mất viền khiến không quét được */
+        .qr-col { flex: none; margin-bottom: 1.4mm; }
         #qrcode { display: block; width: 11mm; height: 11mm; }
 
         @media print {
